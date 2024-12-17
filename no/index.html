@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vodka Bottle Snowfall</title>
+  <style>
+    /* General Styling */
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #4f7942; /* Ranger Green */
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+    }
+
+    /* Vodka Bottle Styling */
+    .vodka-bottle {
+      position: absolute;
+      width: 30px;
+      height: 80px;
+      background-image: url('lejupielāde.png'); /* Vodka Bottle Image */
+      background-size: contain;
+      background-repeat: no-repeat;
+      user-select: none;
+      pointer-events: none;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh); /* Vodka bottles fall to the bottom */
+      }
+    }
+
+    /* Snow Hills Container */
+    #snow-hills {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 200px; /* Total height for snow hills */
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-end;
+      gap: 0; /* Remove spacing between hills */
+    }
+
+    .snow-hill {
+      width: 120px; /* Bigger width */
+      height: 60px; /* Bigger height */
+      background: #ffffff;
+      border-radius: 60% 60% 0 0; /* Rounded top for hill effect */
+      position: relative;
+      animation: growSnow 0.5s ease forwards;
+      margin-left: -20px; /* Overlap hills for natural look */
+    }
+
+    @keyframes growSnow {
+      from {
+        transform: scaleY(0);
+      }
+      to {
+        transform: scaleY(1);
+      }
+    }
+
+    /* Card Container */
+    .card {
+      position: relative;
+      width: 300px;
+      height: 400px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      text-align: center;
+      z-index: 10;
+    }
+
+    /* Card Front */
+    .card-front {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #e63946, #f1faee);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: transform 1s ease-in-out;
+    }
+
+    .card-front h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    .card-front img {
+      width: 80px;
+      margin: 20px 0;
+    }
+
+    .card-front p {
+      font-size: 1.2rem;
+    }
+
+    /* Open Effect */
+    .card:hover .card-front {
+      transform: translateX(-100%);
+    }
+
+    /* Card Inside */
+    .card-inside {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #f9f9f9;
+      color: #333;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .card-inside h2 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #e63946;
+    }
+
+    .card-inside p {
+      font-size: 1rem;
+      margin: 15px 0;
+    }
+
+    /* Footer Design */
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <!-- Snow Hills Area -->
+  <div id="snow-hills"></div>
+
+  <!-- Christmas Card -->
+  <div class="card">
+    <!-- Front of the Card -->
+    <div class="card-front">
+      <h1>Happy Holidays!</h1>
+      <img src="https://img.icons8.com/color/96/christmas-star.png" alt="Christmas Star">
+      <p>With a touch of vodka! 🍸</p>
+    </div>
+    
+    <!-- Inside of the Card -->
+    <div class="card-inside">
+      <h2>Cheers to You!</h2>
+      <p>
+        Wishing you peace, love, and perhaps a bottle of vodka this holiday season!
+      </p>
+      <p>🎉 Stay safe and enjoy the celebrations! 🍾</p>
+      <div class="footer">- From Your Fun-Loving Friend</div>
+    </div>
+  </div>
+
+  <!-- JavaScript for Vodka Bottles -->
+  <script>
+    const numberOfBottles = 30; // Number of falling bottles
+    const snowHillsContainer = document.getElementById("snow-hills");
+
+    // Function to create falling vodka bottles
+    function createBottle() {
+      const bottle = document.createElement("div");
+      bottle.classList.add("vodka-bottle");
+      document.body.appendChild(bottle);
+
+      // Random position, animation duration, and size
+      const leftPosition = Math.random() * window.innerWidth;
+      const animationDuration = Math.random() * 3 + 2; // 2-5 seconds
+
+      bottle.style.left = `${leftPosition}px`;
+      bottle.style.animationDuration = `${animationDuration}s`;
+
+      // When animation ends, add a snow hill
+      bottle.addEventListener("animationend", () => {
+        bottle.remove();
+        addSnowHill(leftPosition);
+      });
+    }
+
+    // Function to add snow hills at the bottom
+    function addSnowHill(position) {
+      const snowHill = document.createElement("div");
+      snowHill.classList.add("snow-hill");
+
+      // Randomize hill position slightly
+      const leftOffset = Math.random() * 30 - 15;
+      snowHill.style.left = `${position + leftOffset}px`;
+      snowHillsContainer.appendChild(snowHill);
+
+      // Limit the number of hills to prevent overflow
+      if (snowHillsContainer.children.length > 20) {
+        snowHillsContainer.removeChild(snowHillsContainer.firstChild);
+      }
+    }
+
+    // Create bottles at intervals
+    setInterval(createBottle, 200);
+  </script>
+</body>
+</html>
